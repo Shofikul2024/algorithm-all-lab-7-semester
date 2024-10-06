@@ -1,0 +1,601 @@
+1.	QuickSortinEndPivot.cpp  
+
+
+#include <iostream>
+
+    using namespace std;
+
+    /* function that consider last element as pivot,
+    place the pivot at its exact position, and place
+    smaller elements to left of pivot and greater
+    elements to right of pivot.  */
+    int partition (int a[], int start, int end)
+    {
+        int pivot = a[end]; // pivot element
+        int i = (start - 1);
+
+        for (int j = start; j <= end - 1; j++)
+        {
+            // If current element is smaller than the pivot
+            if (a[j] < pivot)
+            {
+                i++; // increment index of smaller element
+                int t = a[i];
+                a[i] = a[j];
+                a[j] = t;
+            }
+        }
+        int t = a[i+1];
+        a[i+1] = a[end];
+        a[end] = t;
+        return (i + 1);
+    }
+
+    /* function to implement quick sort */
+    void quick(int a[], int start, int end) /* a[] = array to be sorted, start = Starting index, end = Ending index */
+    {
+        if (start < end)
+        {
+            int p = partition(a, start, end);  //p is the partitioning index
+            quick(a, start, p - 1);
+            quick(a, p + 1, end);
+        }
+    }
+
+    /* function to print an array */
+    void printArr(int a[], int n)
+    {
+        int i;
+        for (i = 0; i < n; i++)
+            cout<<a[i]<< " ";
+    }
+    int main()
+    {
+        int a[] = { 23, 8, 28, 13, 18, 26 };
+        int n = sizeof(a) / sizeof(a[0]);
+        cout<<"Before sorting array elements are - \n";
+        printArr(a, n);
+        quick(a, 0, n - 1);
+        cout<<"\nAfter sorting array elements are - \n";
+        printArr(a, n);
+
+        return 0;
+    }
+
+
+
+1.	Er second part    Merge sort  
+
+
+
+#include <stdio.h>
+
+    /* Function to merge the subarrays of a[] */
+    void merge(int a[], int p, int q, int r)
+    {
+        int i, j, k;
+        int n1 = q - p + 1;
+        int n2 = r - q;
+
+        int LeftArray[n1], RightArray[n2]; //temporary arrays
+
+        /* copy data to temp arrays */
+        for (int i = 0; i < n1; i++)
+        LeftArray[i] = a[p + i];
+
+        for (int j = 0; j < n2; j++)
+        RightArray[j] = a[q + 1 + j];
+
+        i = 0; /* initial index of first sub-array */
+        j = 0; /* initial index of second sub-array */
+        k = p;  /* initial index of merged sub-array */
+
+        while (i < n1 && j < n2)
+        {
+            if(LeftArray[i] <= RightArray[j])
+            {
+                a[k] = LeftArray[i];
+                i++;
+            }
+            else
+            {
+                a[k] = RightArray[j];
+                j++;
+            }
+            k++;
+        }
+        while (i<n1)
+        {
+            a[k] = LeftArray[i];
+            i++;
+            k++;
+        }
+
+        while (j<n2)
+        {
+            a[k] = RightArray[j];
+            j++;
+            k++;
+        }
+    }
+
+    void mergeSort(int a[], int p, int r)
+    {
+        if (p < r)
+        {
+            int q = (p + r) / 2;
+            mergeSort(a, p, q);
+            mergeSort(a, q + 1, r);
+            merge(a, p, q, r);
+        }
+    }
+
+    /* Function to print the array */
+    void printArray(int a[], int n)
+    {
+        int i;
+        for (i = 0; i < n; i++)
+            printf("%d ", a[i]);
+        printf("\n");
+    }
+
+    int main()
+    {
+        int a[] = { 12, 31, 25, 8, 32, 17, 40, 42 };
+        int n = sizeof(a) / sizeof(a[0]);
+        printf("Before sorting array elements are - \n");
+        printArray(a, n);
+        mergeSort(a, 0, n - 1);
+        printf("\n \n");
+        printf("After sorting array elements are - \n");
+        printArray(a, n);
+        return 0;
+    }
+
+
+
+2.	Heap sort 
+
+#include<stdio.h>
+#include<conio.h>
+
+void maxheap(int a[],int beg,int end)
+{
+    int i;
+    for(i=end/2; i>=beg; i--)
+        maxheapify(a,i,end);
+}
+
+void maxheapify(int a[], int f, int size)
+{
+    int max=f, l=f*2, r=f*2+1, t;
+    if(l<=size && a[l]>a[max])
+        max=l;
+    if(r<=size && a[r]>a[max])
+        max=r;
+    if(f!=max)
+    {
+        t=a[f];
+        a[f]=a[max];
+        a[max]=t;
+        maxheapify(a, max, size);
+    }
+
+}
+
+void heapsort(int a[], int size)
+{
+    int i,t;
+    for(i=size; i>=2; i--)
+    {
+        t=a[1];
+        a[1]=a[i];
+        a[i]=t;
+        maxheapify(a,1,i-1);
+    }
+}
+
+void main()
+{
+    int a[10],i;
+    printf("Enter array elements:");
+    for(i=1;i<10;i++)
+        scanf("%d",&a[i]);
+    maxheap(a,1,9);
+    heapsort(a,9);
+    printf("\nSorted array:\n");
+    for(i=1; i<10; i++)
+        printf("%4d", a[i]);
+}
+
+
+
+3.	BFS using c 
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+// Queue structure for BFS
+struct Queue {
+    int items[MAX];
+    int front;
+    int rear;
+};
+
+struct Queue* createQueue() {
+    struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
+    q->front = -1;
+    q->rear = -1;
+    return q;
+}
+
+int isEmpty(struct Queue* q) {
+    return q->rear == -1;
+}
+
+void enqueue(struct Queue* q, int value) {
+    if (q->rear == MAX - 1) {
+        printf("\nQueue is Full");
+    } else {
+        if (q->front == -1)
+            q->front = 0;
+        q->rear++;
+        q->items[q->rear] = value;
+    }
+}
+
+int dequeue(struct Queue* q) {
+    int item;
+    if (isEmpty(q)) {
+        printf("Queue is empty");
+        item = -1;
+    } else {
+        item = q->items[q->front];
+        q->front++;
+        if (q->front > q->rear) {
+            q->front = q->rear = -1;
+        }
+    }
+    return item;
+}
+
+void bfs(int adjMatrix[MAX][MAX], int visited[MAX], int startVertex, int vertices) {
+    struct Queue* q = createQueue();
+
+    visited[startVertex] = 1;
+    enqueue(q, startVertex);
+
+    printf("BFS Traversal: ");
+    while (!isEmpty(q)) {
+        int currentVertex = dequeue(q);
+        printf("%d ", currentVertex);
+
+        for (int i = 0; i < vertices; i++) {
+            if (adjMatrix[currentVertex][i] == 1 && !visited[i]) {
+                visited[i] = 1;
+                enqueue(q, i);
+            }
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int vertices, adjMatrix[MAX][MAX];
+    int visited[MAX] = {0};
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+
+    printf("Enter the adjacency matrix:\n");
+    for (int i = 0; i < vertices; i++) {
+        for (int j = 0; j < vertices; j++) {
+            scanf("%d", &adjMatrix[i][j]);
+        }
+    }
+
+    int startVertex;
+    printf("Enter the starting vertex: ");
+    scanf("%d", &startVertex);
+
+    bfs(adjMatrix, visited, startVertex, vertices);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+4.DFS : final code in c
+
+#include <stdio.h>
+#define MAX 100
+
+void dfs(int adjMatrix[MAX][MAX], int visited[MAX], int vertex, int vertices) {
+    visited[vertex] = 1;
+    printf("%d ", vertex);
+
+    for (int i = 0; i < vertices; i++) {
+        if (adjMatrix[vertex][i] == 1 && !visited[i]) {
+            dfs(adjMatrix, visited, i, vertices);
+        }
+    }
+}
+
+int main() {
+    int vertices, adjMatrix[MAX][MAX];
+    int visited[MAX] = {0};
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+
+    printf("Enter the adjacency matrix:\n");
+    for (int i = 0; i < vertices; i++) {
+        for (int j = 0; j < vertices; j++) {
+            scanf("%d", &adjMatrix[i][j]);
+        }
+    }
+
+    int startVertex;
+    printf("Enter the starting vertex: ");
+    scanf("%d", &startVertex);
+
+    printf("DFS Traversal: ");
+    dfs(adjMatrix, visited, startVertex, vertices);
+    printf("\n");
+
+    return 0;
+}
+
+
+
+
+5. Implementation of Fractional Knapsack problem.
+# include<stdio.h>
+
+void knapsack(int n, float weight[], float profit[], float capacity) {
+   float x[20], tp = 0;
+   int i, j, u;
+   u = capacity;
+
+   for (i = 0; i < n; i++)
+      x[i] = 0.0;
+
+   for (i = 0; i < n; i++) {
+      if (weight[i] > u)
+         break;
+      else {
+         x[i] = 1.0;
+         tp = tp + profit[i];
+         u = u - weight[i];
+      }
+   }
+
+   if (i < n){
+      x[i] = u / weight[i];
+      tp = tp + (x[i] * profit[i]);
+   }
+
+   printf("\nThe result vector is:");
+   for (i = 0; i < n; i++)
+      printf("%0.2f\t", x[i]);
+
+   printf("\nMaximum profit is:%0.2f", tp);
+   printf("\n");
+}
+
+int main() {
+   float weight[20], profit[20], capacity;
+   int num, i, j;
+   float ratio[20], temp;
+
+   printf("\nEnter the no. of objects:");
+   scanf("%d", &num);
+
+   printf("\nEnter the wts and profits of each object:\n");
+   for (i = 0; i < num; i++) {
+      scanf("%f %f", &weight[i], &profit[i]);
+   }
+
+   printf("\nEnter the capacity of knapsack:");
+   scanf("%f", &capacity);
+
+   for (i = 0; i < num; i++) {
+      ratio[i] = profit[i] / weight[i];
+   }
+
+   for (i = 0; i < num; i++) {
+      for (j = i + 1; j < num; j++) {
+         if (ratio[i] < ratio[j]) {
+            temp = ratio[j];
+            ratio[j] = ratio[i];
+            ratio[i] = temp;
+
+            temp = weight[j];
+            weight[j] = weight[i];
+            weight[i] = temp;
+
+            temp = profit[j];
+            profit[j] = profit[i];
+            profit[i] = temp;
+         }
+      }
+   }
+
+   knapsack(num, weight, profit, capacity);
+   return(0);
+}
+
+
+
+
+6. Implementation of 0/1 Knapsack problem.
+ 
+#include <stdio.h>
+
+// Function to return the maximum value that can be put in a knapsack of capacity W
+int knapsack(int W, int weights[], int values[], int n)
+{
+    int dp[n+1][W+1];
+
+    // Build the dp array in a bottom-up manner
+    for (int i = 0; i <= n; i++)
+    {
+        for (int w = 0; w <= W; w++)
+        {
+            if (i == 0 || w == 0)
+                dp[i][w] = 0;
+            else if (weights[i-1] <= w)
+                dp[i][w] = (values[i-1] + dp[i-1][w - weights[i-1]] > dp[i-1][w]) ?
+                           values[i-1] + dp[i-1][w - weights[i-1]] : dp[i-1][w];
+            else
+                dp[i][w] = dp[i-1][w];
+        }
+    }
+
+    // dp[n][W] contains the maximum value
+    return dp[n][W];
+}
+
+int main()
+{
+    int values[] = {60, 100, 120};
+    int weights[] = {10, 20, 30};
+    int W = 50;
+    int n = sizeof(values) / sizeof(values[0]);
+
+    int max_value = knapsack(W, weights, values, n);
+    printf("Maximum value in Knapsack = %d\n", max_value);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+7.Implementation of the N-Queen problem.
+
+
+#include<stdio.h>
+#include<conio.h>
+#include<math.h>
+int a[30], count=0;
+
+int place(int pos)
+{
+    int i;
+    for(i=1; i<pos; i++)
+    {
+        if((a[i]==a[pos])|| ((abs(a[i]-a[pos])==abs(i-pos))))
+            return 0;
+    }
+    return 1;
+}
+void print(int n)
+{
+    int i,j;
+    count++;
+    printf("\n\nSolution #%d:\n",count);
+    for(i=1; i<=n; i++)
+    {
+        for(j=1;j<=n;j++)
+        {
+            if(a[i]==j)
+                printf("Q\t");
+            else
+                printf("*\t");
+        }
+        printf("\n");
+    }
+}
+
+void queen(int n)
+{
+    int k=1;
+    a[k]=0;
+    while(k!=0)
+    {
+        do{
+            a[k]++;
+        }while((a[k]<=n)&& !place(k));
+
+        if(a[k]<=n)
+        {
+            if(k==n)
+                print(n);
+            else
+            {
+                k++;
+                a[k]=0;
+            }
+        }
+        else
+            k--;
+    }
+}
+
+void main()
+{
+    int n;
+    printf("Enter the number of Queens:");
+    scanf("%d", &n);
+    queen(n);
+    printf("\nTotal solutions=%d", count);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
